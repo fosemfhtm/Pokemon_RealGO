@@ -335,7 +335,8 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       "드래곤" -> 2134346388
       "페어리" -> 2141067844
       "악" -> R.color.dark
-      else -> 2142348709
+      "노말" -> 2142348709
+      else -> 2133535019
     }
   }
 
