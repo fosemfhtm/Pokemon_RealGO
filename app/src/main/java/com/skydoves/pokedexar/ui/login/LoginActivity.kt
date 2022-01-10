@@ -16,12 +16,9 @@ import com.amn.easysharedpreferences.EasySharedPreference
 import com.amn.easysharedpreferences.EasySharedPreferenceConfig
 import com.skydoves.pokedexar.R
 import com.skydoves.pokedexar.ui.main.MainActivity
-import okhttp3.OkHttpClient
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
-import java.net.CookieManager
-import kotlin.math.sign
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
             dialog.findViewById<Button>(R.id.real_login_button).setOnClickListener{
 
                 val loading = Dialog(this@LoginActivity)
-                loading.setContentView(R.layout.loading_login)
+                loading.setContentView(R.layout.loading_dialog)
                 loading.setCancelable(false);
                 loading.show()
 
@@ -115,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
 
                     val loading = Dialog(this@LoginActivity)
-                    loading.setContentView(R.layout.loading_login)
+                    loading.setContentView(R.layout.loading_dialog)
                     loading.setCancelable(false);
                     loading.show()
 

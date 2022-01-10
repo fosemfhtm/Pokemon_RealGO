@@ -280,7 +280,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="스킬1"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    android:textScaleX="0.9"/>
                 <TextView
                     android:id="@+id/detail_skill2"
                     android:layout_width="0dp"
@@ -288,7 +289,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="스킬2"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    android:textScaleX="0.9"/>
                 <TextView
                     android:id="@+id/detail_skill3"
                     android:layout_width="0dp"
@@ -296,7 +298,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="스킬3"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    android:textScaleX="0.9"/>
                 <TextView
                     android:id="@+id/detail_skill4"
                     android:layout_width="0dp"
@@ -304,7 +307,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="스킬4"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    android:textScaleX="0.9"/>
             </LinearLayout>
 
             <LinearLayout

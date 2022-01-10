@@ -69,7 +69,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
   override fun onCreate(savedInstanceState: Bundle?) {
     applyFullScreenWindow()
     super.onCreate(savedInstanceState)
-
+    val loading = Dialog(this)
+    loading.setContentView(R.layout.loading_dialog)
+    loading.setCancelable(false)
+    loading.show()
 
     DataIO.requestBoxAndDo {
       boxList = it
@@ -152,6 +155,7 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       gridView.adapter = pokeboxAdapter
 
       showSelectedPokemon()
+      loading.dismiss()
     }
   }
 
@@ -167,6 +171,7 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       }
     }
 
+
     val pokemon1 = selectedBoxList[0]
     val pokemon1_name = findViewById<TextView>(R.id.pokemon1_name)
     val pokemon1_img = findViewById<ImageView>(R.id.pokemon1_img)
@@ -181,10 +186,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
     pokemon1_s2.text = pokemon1?.skill2?.name
     pokemon1_s3.text = pokemon1?.skill3?.name
     pokemon1_s4.text = pokemon1?.skill4?.name
-    pokemon1_s1.setBackgroundColor(getTypeColor(pokemon1!!.skill1.type.name))
-    pokemon1_s2.setBackgroundColor(getTypeColor(pokemon1!!.skill2.type.name))
-    pokemon1_s3.setBackgroundColor(getTypeColor(pokemon1!!.skill3.type.name))
-    pokemon1_s4.setBackgroundColor(getTypeColor(pokemon1!!.skill4.type.name))
+    pokemon1_s1.setBackgroundColor(getTypeColor(pokemon1?.skill1?.type?.name?:""))
+    pokemon1_s2.setBackgroundColor(getTypeColor(pokemon1?.skill2?.type?.name?:""))
+    pokemon1_s3.setBackgroundColor(getTypeColor(pokemon1?.skill3?.type?.name?:""))
+    pokemon1_s4.setBackgroundColor(getTypeColor(pokemon1?.skill4?.type?.name?:""))
     pokemon1_img.setOnLongClickListener {
       showDialog01(0)
       true
@@ -204,10 +209,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
     pokemon2_s2.text = pokemon2?.skill2?.name
     pokemon2_s3.text = pokemon2?.skill3?.name
     pokemon2_s4.text = pokemon2?.skill4?.name
-    pokemon2_s1.setBackgroundColor(getTypeColor(pokemon2!!.skill1.type.name))
-    pokemon2_s2.setBackgroundColor(getTypeColor(pokemon2!!.skill2.type.name))
-    pokemon2_s3.setBackgroundColor(getTypeColor(pokemon2!!.skill3.type.name))
-    pokemon2_s4.setBackgroundColor(getTypeColor(pokemon2!!.skill4.type.name))
+    pokemon2_s1.setBackgroundColor(getTypeColor(pokemon2?.skill1?.type?.name?:""))
+    pokemon2_s2.setBackgroundColor(getTypeColor(pokemon2?.skill2?.type?.name?:""))
+    pokemon2_s3.setBackgroundColor(getTypeColor(pokemon2?.skill3?.type?.name?:""))
+    pokemon2_s4.setBackgroundColor(getTypeColor(pokemon2?.skill4?.type?.name?:""))
     pokemon2_img.setOnLongClickListener {
       showDialog01(1)
       true
@@ -227,10 +232,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
     pokemon3_s2.text = pokemon3?.skill2?.name
     pokemon3_s3.text = pokemon3?.skill3?.name
     pokemon3_s4.text = pokemon3?.skill4?.name
-    pokemon3_s1.setBackgroundColor(getTypeColor(pokemon3!!.skill1.type.name))
-    pokemon3_s2.setBackgroundColor(getTypeColor(pokemon3!!.skill2.type.name))
-    pokemon3_s3.setBackgroundColor(getTypeColor(pokemon3!!.skill3.type.name))
-    pokemon3_s4.setBackgroundColor(getTypeColor(pokemon3!!.skill4.type.name))
+    pokemon3_s1.setBackgroundColor(getTypeColor(pokemon3?.skill1?.type?.name?:""))
+    pokemon3_s2.setBackgroundColor(getTypeColor(pokemon3?.skill2?.type?.name?:""))
+    pokemon3_s3.setBackgroundColor(getTypeColor(pokemon3?.skill3?.type?.name?:""))
+    pokemon3_s4.setBackgroundColor(getTypeColor(pokemon3?.skill4?.type?.name?:""))
     pokemon3_img.setOnLongClickListener {
       showDialog01(2)
       true
@@ -249,10 +254,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
     pokemon4_s2.text = pokemon4?.skill2?.name
     pokemon4_s3.text = pokemon4?.skill3?.name
     pokemon4_s4.text = pokemon4?.skill4?.name
-    pokemon4_s1.setBackgroundColor(getTypeColor(pokemon4!!.skill1.type.name))
-    pokemon4_s2.setBackgroundColor(getTypeColor(pokemon4!!.skill2.type.name))
-    pokemon4_s3.setBackgroundColor(getTypeColor(pokemon4!!.skill3.type.name))
-    pokemon4_s4.setBackgroundColor(getTypeColor(pokemon4!!.skill4.type.name))
+    pokemon4_s1.setBackgroundColor(getTypeColor(pokemon4?.skill1?.type?.name?:""))
+    pokemon4_s2.setBackgroundColor(getTypeColor(pokemon4?.skill2?.type?.name?:""))
+    pokemon4_s3.setBackgroundColor(getTypeColor(pokemon4?.skill3?.type?.name?:""))
+    pokemon4_s4.setBackgroundColor(getTypeColor(pokemon4?.skill4?.type?.name?:""))
     pokemon4_img.setOnLongClickListener {
       showDialog01(3)
       true
@@ -334,7 +339,8 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       "드래곤" -> 2134346388
       "페어리" -> 2141067844
       "악" -> R.color.dark
-      else -> 2142348709
+      "노말" -> 2142348709
+      else -> 2133535019
     }
   }
 
