@@ -69,7 +69,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
   override fun onCreate(savedInstanceState: Bundle?) {
     applyFullScreenWindow()
     super.onCreate(savedInstanceState)
-
+    val loading = Dialog(this)
+    loading.setContentView(R.layout.loading_dialog)
+    loading.setCancelable(false)
+    loading.show()
 
     DataIO.requestBoxAndDo {
       boxList = it
@@ -152,6 +155,7 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       gridView.adapter = pokeboxAdapter
 
       showSelectedPokemon()
+      loading.dismiss()
     }
   }
 
