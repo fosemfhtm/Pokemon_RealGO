@@ -75,21 +75,40 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
           return@addOnUpdateListener
         }
 
+        // init button interactions, hp, etc
+        initializeUI()
+
         // initialize the global anchor with default rendering models.
         arSceneView.session.whatIfNotNull { session ->
           initializeModels(this, session)
         }
       }
 
-      // init button interactions, hp, etc
-      initializeUI()
+
     }
   }
 
   private fun initializeModels(arFragment: ArFragment, session: Session) {
     if (session.allAnchors.isEmpty() && !viewModel.isCaught) {
-      val pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
+      var pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
       session.createAnchor(pose).apply {
+        val myPokemon = PokemonModels.getPokemonByName(myFighterName).
+        copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON1)
+        ModelRenderer.renderObject(this@SceneActivity, myPokemon) { renderable ->
+          ModelRenderer.addGardenOnScene(arFragment, this, renderable, myPokemon)
+        }
+      }
+
+      pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, -1f))
+      session.createAnchor(pose).apply {
+        val opPokemon = PokemonModels.getPokemonByName(opFighterName).
+        copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON2)
+        ModelRenderer.renderObject(this@SceneActivity, opPokemon) { renderable ->
+          ModelRenderer.addGardenOnScene(arFragment, this, renderable, opPokemon)
+        }
+      }
+
+      /*session.createAnchor(pose).apply {
         val pokemon1 = PokemonModels.getRandomPokemon().copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON1)
         ModelRenderer.renderObject(this@SceneActivity, pokemon1) { renderable ->
           ModelRenderer.addPokemonOnScene(arFragment, this, renderable, pokemon1)
@@ -99,7 +118,7 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
         ModelRenderer.renderObject(this@SceneActivity, pokemon2) { renderable ->
           ModelRenderer.addPokemonOnScene(arFragment, this, renderable, pokemon2)
         }
-      }
+      }*/
     }
   }
 
@@ -182,6 +201,8 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
   lateinit var myId: String
   lateinit var roomId: String
+  lateinit var myFighterName: String
+  lateinit var opFighterName: String
   var myFighterHp: Double = 0.0
   var opFighterHp: Double = 0.0
 
@@ -196,9 +217,6 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     val fight2 = resultObj[1] as JSONObject
     val id1 = fight1.get("ownerId")
     val id2 = fight2.get("ownerId")
-
-    var myFighterName: String = ""
-    var opFighterName: String = ""
 
     // 내 포켓몬 찾기
     if (id1 == myId) {
