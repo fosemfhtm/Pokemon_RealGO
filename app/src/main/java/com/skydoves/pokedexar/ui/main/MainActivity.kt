@@ -101,6 +101,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
       else -> return true
     }
   }
+
+
+  override fun onResume() {
+    DataIO.requestUserAndDo {
+      findViewById<TextView>(R.id.main_name).text = "이름 : ${it.nickname}"
+      findViewById<TextView>(R.id.main_money).text = "돈 : ${it.money}$"
+    }
+    super.onResume()
+  }
+
+
   fun showDialog02(){
     dialog02.setContentView(R.layout.battleroom_dialog)
     dialog02.show()
