@@ -69,7 +69,10 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
   override fun onCreate(savedInstanceState: Bundle?) {
     applyFullScreenWindow()
     super.onCreate(savedInstanceState)
-
+    val loading = Dialog(this)
+    loading.setContentView(R.layout.loading_dialog)
+    loading.setCancelable(false)
+    loading.show()
 
     DataIO.requestBoxAndDo {
       boxList = it
@@ -152,6 +155,7 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       gridView.adapter = pokeboxAdapter
 
       showSelectedPokemon()
+      loading.dismiss()
     }
   }
 
@@ -335,7 +339,8 @@ class HomeActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_hom
       "드래곤" -> 2134346388
       "페어리" -> 2141067844
       "악" -> R.color.dark
-      else -> 2142348709
+      "노말" -> 2142348709
+      else -> 2133535019
     }
   }
 
