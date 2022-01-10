@@ -54,10 +54,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     getSupportActionBar()?.setDisplayShowTitleEnabled(false)
 
     // 아래처럼 사용하세요!
-    DataIO.requestUserAndDo {
-      findViewById<TextView>(R.id.main_name).text = "이름 : ${it.nickname}"
-      findViewById<TextView>(R.id.main_money).text = "돈 : ${it.money}$"
-    }
+    showInformation()
 
     dialog02 = Dialog(this)
 
@@ -102,6 +99,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     SceneActivity.startActivity(this@MainActivity)
   }
 
+  override fun onResume() {
+   showInformation()
+    super.onResume()
+  }
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     super.onCreateOptionsMenu(menu)
     getMenuInflater().inflate(R.menu.logout, menu)
@@ -124,6 +125,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
   lateinit var mRoomId: String
   lateinit var mMyId: String
+
+  fun showInformation(){
+    DataIO.requestUserAndDo {
+      findViewById<TextView>(R.id.main_name).text = "이름 : ${it.nickname}"
+      findViewById<TextView>(R.id.main_money).text = "돈 : ${it.money}$"
+    }
+  }
 
   fun showDialog02(){
     dialog02.setContentView(R.layout.battleroom_dialog)
