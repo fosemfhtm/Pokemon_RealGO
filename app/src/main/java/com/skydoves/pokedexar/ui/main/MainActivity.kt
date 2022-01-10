@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import android.app.Dialog
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.GridView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.widget.Toolbar
@@ -129,8 +125,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     dialog02.setContentView(R.layout.battleroom_dialog)
     dialog02.show()
 
+    val progressBar = dialog02.findViewById<ProgressBar>(R.id.matching_progress)
+
     val enter_btn = dialog02.findViewById<Button>(R.id.enter_btn)
     enter_btn.setOnClickListener{
+      progressBar.visibility = View.VISIBLE
+
       val obj = JSONObject()
       val playerObj = JSONObject()
 
@@ -154,6 +154,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     val cancel_btn = dialog02.findViewById<Button>(R.id.cancel_btn)
     cancel_btn.setOnClickListener {
+      progressBar.visibility = View.INVISIBLE
       dialog02.dismiss()
     }
 
