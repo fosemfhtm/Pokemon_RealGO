@@ -16,10 +16,12 @@
 
 package com.skydoves.pokedexar.ui.scene
 
+import android.app.Dialog
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.ViewDataBinding
@@ -184,8 +186,24 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     updatePokemon(fightsObj)
   }
 
+  lateinit var endDialog : Dialog
+
   var onBattleEnd = Emitter.Listener { args ->
     val obj = JSONObject(args[0].toString())
+    val stateObj = obj.getJSONObject("state")
+    val resultObj = obj.getJSONObject("result")
+
+    val winnerId = stateObj.getString("winner")
+
+
+    runOnUiThread {
+      endDialog = Dialog(this@SceneActivity)
+      endDialog.setContentView(R.layout.dialog_battle_end)
+      endDialog.setCancelable(false)
+      endDialog.show()
+
+      endDialog.findViewById<TextView>(R.id.battle_end_winner).setText(winnerId)
+    }
   }
 
 
@@ -253,7 +271,7 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
     var toastText = ""
     // 내 포켓몬 찾기
-    if (id1 == myId) {
+    if (id2 == myId) {
       myFighterName = fight1.getString("name")
       opFighterName = fight2.getString("name")
       myFighterId = fight1.getString("id")
