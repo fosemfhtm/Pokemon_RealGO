@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.app.Dialog
+import android.text.Html
 import android.view.View
 import android.view.Window
 import android.widget.*
@@ -128,13 +129,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     loading.setCancelable(false)
     loading.show()
 
+    //findViewById<LinearLayout>(R.id.main_status).bringToFront()
+
     DataIO.requestUserAndDo {
-      findViewById<TextView>(R.id.main_name).text = "이름 : ${it.nickname}"
-      findViewById<TextView>(R.id.main_money).text = "돈 : ${it.money}$"
-      findViewById<TextView>(R.id.main_winlose).text = "전적 : ${it.win}승 ${it.lose}패"
+      findViewById<TextView>(R.id.main_name).text = Html.fromHtml("<b>이름</b>   | ${it.nickname}")
+      findViewById<TextView>(R.id.main_money).text = Html.fromHtml("<b>돈</b>   | ${it.money}원") //"돈 : ${it.money}$"
+      findViewById<TextView>(R.id.main_winlose).text = Html.fromHtml("<b>전적</b>   | ${it.win}승 ${it.lose}패") //"전적 : ${it.win}승 ${it.lose}패"
     }
     DataIO.requestBoxAndDo {
-      findViewById<TextView>(R.id.main_have).text = "보유 포켓몬 : ${it.size}마리"
+      findViewById<TextView>(R.id.main_have).text = Html.fromHtml("<b>보유 포켓몬</b>   | ${it.size}마리") //"보유 포켓몬 : ${it.size}마리"
       showSelectedPokemon(it)
       loading.dismiss()
     }

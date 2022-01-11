@@ -28,123 +28,135 @@
       type="com.skydoves.pokedexar.ui.adapter.PokemonAdapter" />
   </data>
 
+
   <LinearLayout
-      android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    android:clipToPadding="false">
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/background_line"
+      android:clipToPadding="false"
+      android:gravity="center"
+      android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/appBarLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
       <include
-        android:id="@+id/main_toolbar"
-        layout="@layout/toolbar_home" />
+          android:id="@+id/main_toolbar"
+          layout="@layout/toolbar_home" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:background="@color/background800"
-        android:layout_margin="5dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
+        android:id="@+id/main_status"
+        android:layout_width="285dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:background="@drawable/dialog_round"
+        android:orientation="vertical">
 
       <TextView
           android:id="@+id/main_name"
-          android:layout_weight="1"
-          android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:textColor="@color/white"
+          android:layout_margin="5dp"
+          android:layout_weight="1"
           android:text="이름 :"
-          android:textSize="20dp"/>
+          android:textColor="@color/white"
+          android:textSize="20dp" />
 
       <TextView
           android:id="@+id/main_money"
-          android:layout_weight="1"
-          android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:textColor="@color/white"
+          android:layout_margin="5dp"
+          android:layout_weight="1"
           android:text="돈 : "
-          android:textSize="20dp"/>
+          android:textColor="@color/white"
+          android:textSize="20dp" />
 
       <TextView
           android:id="@+id/main_winlose"
-          android:layout_weight="1"
-          android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:textColor="@color/white"
+          android:layout_margin="5dp"
+          android:layout_weight="1"
           android:text="전적 :"
-          android:textSize="20dp"/>
+          android:textColor="@color/white"
+          android:textSize="20dp" />
 
       <TextView
           android:id="@+id/main_have"
-          android:layout_weight="1"
-          android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:textColor="@color/white"
+          android:layout_margin="5dp"
+          android:layout_weight="1"
           android:text="보유 포켓몬 : "
-          android:textSize="20dp"/>
+          android:textColor="@color/white"
+          android:textSize="20dp" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:layout_weight="6"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="6"
+        android:orientation="horizontal">
+
       <ImageView
-          android:layout_weight="2"
           android:layout_width="0dp"
           android:layout_height="match_parent"
-          android:src="@drawable/trainer_red"/>
+          android:layout_weight="2"
+          android:src="@drawable/trainer_red" />
+
       <LinearLayout
-          android:layout_weight="1"
-          android:orientation="vertical"
           android:layout_width="0dp"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:orientation="vertical">
+
         <ImageView
             android:id="@+id/pokemon1_img"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokemon"/>
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:src="@drawable/pokemon" />
+
         <ImageView
             android:id="@+id/pokemon2_img"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
             android:src="@drawable/pokemon" />
+
         <ImageView
             android:id="@+id/pokemon3_img"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokemon"/>
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:src="@drawable/pokemon" />
+
         <ImageView
             android:id="@+id/pokemon4_img"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokemon"/>
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:src="@drawable/pokemon" />
       </LinearLayout>
 
 
@@ -152,50 +164,51 @@
 
 
     <LinearLayout
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
       <Button
-          android:textColor="@color/white"
-          android:text="Home"
-          android:layout_weight="1"
           android:id="@+id/Home_btn"
           android:layout_width="0dp"
           android:layout_height="match_parent"
+          android:layout_weight="1"
           android:contentDescription="@string/app_name"
           android:src="@drawable/pokeball"
+          android:text="Home"
+          android:textColor="@color/white"
           app:backgroundTint="@color/colorPrimary"
           app:fabSize="normal"
           app:tint="@color/white" />
+
       <Button
-          android:textColor="@color/white"
-          android:text="Battle"
-          android:layout_weight="1"
           android:id="@+id/Battle_btn"
           android:layout_width="0dp"
           android:layout_height="match_parent"
+          android:layout_weight="1"
           android:contentDescription="@string/app_name"
           android:src="@drawable/pokeball"
+          android:text="Battle"
+          android:textColor="@color/white"
           app:backgroundTint="@color/colorPrimary"
           app:fabSize="normal"
           app:tint="@color/white" />
+
       <Button
-          android:textColor="@color/white"
-          android:text="Shop"
-          android:layout_weight="1"
           android:id="@+id/Shop_btn"
           android:layout_width="0dp"
           android:layout_height="match_parent"
+          android:layout_weight="1"
           android:contentDescription="@string/app_name"
           android:src="@drawable/pokeball"
+          android:text="Shop"
+          android:textColor="@color/white"
           app:backgroundTint="@color/colorPrimary"
           app:fabSize="normal"
           app:tint="@color/white" />
 
     </LinearLayout>
-
 
 
   </LinearLayout>
