@@ -36,6 +36,7 @@
         android:name="com.google.ar.sceneform.ux.ArFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -46,16 +47,16 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/bindingView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/bindingView"
         app:layout_constraintTop_toTopOf="@+id/bindingView">
 
       <TextView
           android:id="@+id/battle_text_name_me"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="POKEMON1"
           android:textSize="30dp"
@@ -63,12 +64,21 @@
           app:layout_constraintStart_toStartOf="@+id/bindingView"
           app:layout_constraintTop_toTopOf="@+id/bindingView" />
 
+      <ProgressBar
+          android:id="@+id/battle_bar_hp_me"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:progressDrawable="@drawable/stk_progressbar"
+          style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+          android:progress="50"
+          android:max="120"/>
+
       <TextView
           android:id="@+id/battle_text_hp_me"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="HP1"
-          android:textSize="30dp"
+          android:textSize="20dp"
           app:layout_constraintBottom_toBottomOf="@+id/bindingView"
           app:layout_constraintStart_toStartOf="@+id/bindingView"
           app:layout_constraintTop_toTopOf="@+id/bindingView" />
@@ -76,12 +86,12 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/arFragment"
         app:layout_constraintEnd_toEndOf="@+id/bindingView"
-        app:layout_constraintBottom_toBottomOf="@+id/bindingView"
-        app:layout_constraintTop_toTopOf="@+id/bindingView">
+        app:layout_constraintBottom_toBottomOf="@id/arFragment">
       <TextView
           android:id="@+id/battle_text_name_op"
           android:layout_width="wrap_content"
@@ -89,18 +99,26 @@
           android:text="POKEMON2"
           android:textSize="30dp"
           app:layout_constraintBottom_toBottomOf="@+id/bindingView"
-          app:layout_constraintStart_toStartOf="@+id/bindingView"
-          app:layout_constraintTop_toTopOf="@+id/bindingView" />
+          android:layout_gravity="end"/>
+
+      <ProgressBar
+          android:id="@+id/battle_bar_hp_op"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:progressDrawable="@drawable/stk_progressbar"
+          style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+          android:progress="50"
+          android:max="120"/>
 
       <TextView
           android:id="@+id/battle_text_hp_op"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="HP2"
-          android:textSize="30dp"
+          android:textSize="20dp"
           app:layout_constraintBottom_toBottomOf="@+id/bindingView"
           app:layout_constraintEnd_toEndOf="@+id/bindingView"
-          app:layout_constraintTop_toTopOf="@+id/bindingView" />
+          android:layout_gravity="end"/>
     </LinearLayout>
 
 
@@ -109,6 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/bindingView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
