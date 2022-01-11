@@ -70,6 +70,9 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
     updatePokemon(startObj.getJSONArray("fights"))
 
+    // init button interactions, hp, etc
+    initializeUI()
+
     with(findFragmentAs<ArFragment>(R.id.arFragment)) {
       planeDiscoveryController.hide()
       planeDiscoveryController.setInstructionView(null)
@@ -83,16 +86,11 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
           return@addOnUpdateListener
         }
 
-        // init button interactions, hp, etc
-        initializeUI()
-
         // initialize the global anchor with default rendering models.
         arSceneView.session.whatIfNotNull { session ->
           initializeModels(this, session)
         }
       }
-
-
     }
   }
 
@@ -103,9 +101,11 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
   }
 
   private fun initializeModels(arFragment: ArFragment, session: Session) {
-   // TODO: 교체 할 때마다 모델 가져와서 오래걸리나? -> 시작 시 포켓몬 로스터 모두 로드?
+//    Log.d(null, session.allAnchors.size.toString())
 
-    if (session.allAnchors.isEmpty() && !viewModel.isCaught) {
+    // allAnchor.isEmpty() 일 때마다 불러오는듯....??!!!!
+//    if (session.allAnchors.isEmpty()) {
+    if (session.allAnchors.size < 2) {
       var pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
       myFighterAnchor = session.createAnchor(pose)
       myFighterAnchor.apply {
@@ -126,7 +126,18 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
           ModelRenderer.addGardenOnScene(arFragment, this, renderable, opPokemon)
         }
       }
-    }
+    } /*else if (session.allAnchors.size == 1) {
+      var pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
+      var swapFighterAnchor = session.createAnchor(pose)
+      swapFighterAnchor.apply {
+        val swapPokemon = PokemonModels.getPokemonByName(swapPokemonName).
+        copy(localPosition = swapPokemonPos).
+        copy(direction = swapPokemonDir)
+        ModelRenderer.renderObject(this@SceneActivity, swapPokemon) { renderable ->
+          ModelRenderer.addGardenOnScene(arFragment, this, renderable, swapPokemon)
+        }
+      }
+      }*/
   }
 
   // Update UI after receive response
@@ -139,6 +150,8 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
     if (stateKey == "default" || stateKey == "switch") {
       if (stateKey == "switch") {
+        val swapPokemonObj = state.getJSONObject("switch")
+
         // 죽은 포켓몬과 다음 포켓몬 교체
         for (i in 0 until fightsObj.length()) {
           var fo = fightsObj.getJSONObject(i)
@@ -147,8 +160,12 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
             // 죽은 포켓몬 AR 삭제
 //            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId)
             if (deadPokemonId == myFighterId) {
+              myFighterName = swapPokemonObj.getString("name")
               myFighterAnchor.detach() // detach -> remove?
+              opFighterAnchor.detach()
             } else if (deadPokemonId == opFighterId){
+              opFighterName = swapPokemonObj.getString("name")
+              myFighterAnchor.detach()
               opFighterAnchor.detach()
             } else {
               // ...
@@ -167,9 +184,15 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     updatePokemon(fightsObj)
   }
 
+  var onBattleEnd = Emitter.Listener { args ->
+    val obj = JSONObject(args[0].toString())
+  }
+
+
   private fun initializeUI() {
     mSocket = SocketHandler.getSocket()
     mSocket.on("battle_result", onBattleResult)
+    mSocket.on("battle_end", onBattleEnd)
 
     binding.battleBtnSkill1.setOnClickListener {
       val obj = JSONObject()
@@ -255,14 +278,6 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       var toastText = fight2.getString("effect")
     }
 
-//    Thread(Runnable {
-//      if (toastText != "") {
-//        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
-//      }
-
-//    }).start()
-
-    runOnUiThread {
 //      if (toastText != "") {
 //        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show() }
 
@@ -279,14 +294,16 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       val myhppercent = myFighterHp/myFighterMaxHp
       val ophppercent = opFighterHp/opFighterMaxHp
 
-      binding.battleTextNameMe.setText(myFighterName)
-      binding.battleTextNameOp.setText(opFighterName)
-      binding.battleTextHpMe.setText(myhptext)
-      binding.battleTextHpOp.setText(ophptext)
-      binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt())
-      binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt())
-      binding.battleBarHpMe.max = myFighterMaxHp.toInt()
-      binding.battleBarHpOp.max = opFighterMaxHp.toInt()
+      runOnUiThread {
+        binding.battleTextNameMe.setText(myFighterName)
+        binding.battleTextNameOp.setText(opFighterName)
+        binding.battleTextHpMe.setText(myhptext)
+        binding.battleTextHpOp.setText(ophptext)
+        binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt())
+        binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt())
+        binding.battleBarHpMe.max = myFighterMaxHp.toInt()
+        binding.battleBarHpOp.max = opFighterMaxHp.toInt()
+      }
 
 //      if (myhppercent < 0.2) {
 //        binding.battleBarHpMe.progressDrawable = redbar
@@ -311,4 +328,3 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
     }
   }
-}
