@@ -20,6 +20,8 @@ import android.app.Dialog
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
@@ -47,6 +49,7 @@ import org.json.JSONObject
 import com.amn.easysharedpreferences.EasySharedPreference
 import com.google.ar.core.Anchor
 import com.google.ar.sceneform.math.Vector3
+import com.google.gson.Gson
 import org.json.JSONArray
 import kotlin.math.ceil
 
@@ -150,40 +153,13 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     val stateKey = state.getString("key")
     val fightsObj = obj.getJSONArray("fights")
 
-    if (stateKey == "default" || stateKey == "switch") {
-      if (stateKey == "switch") {
-        val swapPokemonObj = state.getJSONObject("switch")
+    showAnimation(obj)
 
-        // 죽은 포켓몬과 다음 포켓몬 교체
-        for (i in 0 until fightsObj.length()) {
-          var fo = fightsObj.getJSONObject(i)
-          if (fo.getString("result") == "die") {
-            val deadPokemonId = fo.getString("id")
-            // 죽은 포켓몬 AR 삭제
-//            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId)
-            if (deadPokemonId == myFighterId) {
-              myFighterName = swapPokemonObj.getString("name")
-              myFighterAnchor.detach() // detach -> remove?
-              opFighterAnchor.detach()
-            } else if (deadPokemonId == opFighterId){
-              opFighterName = swapPokemonObj.getString("name")
-              myFighterAnchor.detach()
-              opFighterAnchor.detach()
-            } else {
-              // ...
-            }
+   //swapLogic(obj)
 
-            fightsObj.put(i, state.getJSONObject("switch"))
-          }
-        }
-      }
-    } else if (stateKey == "end") {
-      // End Battle
-    } else {
-      // ...
-    }
+    //updatePokemon(fightsObj)
 
-    updatePokemon(fightsObj)
+
   }
 
   lateinit var endDialog : Dialog
@@ -263,11 +239,268 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
   id: p.fighter.id,
   hp: p.fighter.hp,
   name: p.fighter.name}, ...]*/
+
+
+  fun swapLogic(obj: JSONObject){
+    val state = obj.getJSONObject("state")
+    val stateKey = state.getString("key")
+    val fightsObj = obj.getJSONArray("fights")
+
+    if (stateKey == "default" || stateKey == "switch") {
+      if (stateKey == "switch") {
+        val swapPokemonObj = state.getJSONObject("switch")
+
+        // 죽은 포켓몬과 다음 포켓몬 교체
+        for (i in 0 until fightsObj.length()) {
+          var fo = fightsObj.getJSONObject(i)
+          if (fo.getString("result") == "die") {
+            val deadPokemonId = fo.getString("id")
+            // 죽은 포켓몬 AR 삭제
+//            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId)
+
+            if (deadPokemonId == myFighterId) {
+              myFighterName = swapPokemonObj.getString("name")
+              myFighterAnchor.detach() // detach -> remove?
+              opFighterAnchor.detach()
+
+            } else if (deadPokemonId == opFighterId){
+              opFighterName = swapPokemonObj.getString("name")
+              myFighterAnchor.detach()
+              opFighterAnchor.detach()
+            } else {
+              // ...
+            }
+
+            fightsObj.put(i, state.getJSONObject("switch"))
+            updateInfo( fightsObj )
+
+            runOnUiThread {
+              val myhptext = "${ceil(myFighterHp).toInt()} / ${myFighterMaxHp.toInt()}"
+              val ophptext = "${ceil(opFighterHp).toInt()} / ${opFighterMaxHp.toInt()}"
+              binding.battleTextNameMe.setText(myFighterName) // 교체
+              binding.battleTextNameOp.setText(opFighterName) // 교체
+              binding.battleTextHpMe.setText(myhptext) // all
+              binding.battleTextHpOp.setText(ophptext) // all
+              binding.battleBarHpMe.max = myFighterMaxHp.toInt() // 교체
+              binding.battleBarHpOp.max = opFighterMaxHp.toInt() // 교체 */
+              binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt()) // all
+              binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt()) // all
+
+            }
+
+
+
+          }
+        }
+      }
+    } else if (stateKey == "end") {
+      // End Battle
+    } else {
+      // ...
+    }
+  }
+
+  fun updateInfo(fightsObj: JSONArray){
+    val resultObj = fightsObj
+
+    val fight1 = resultObj[0] as JSONObject
+    val fight2 = resultObj[1] as JSONObject
+    val id1 = fight1.get("ownerId")
+    val id2 = fight2.get("ownerId")
+
+    var res1 = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    var res2 = Gson().fromJson(fight2.toString(), FightResult::class.java)
+
+    if(res1.attackOrder == 2) {
+      res1 = Gson().fromJson(fight2.toString(), FightResult::class.java)
+      res2 = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    }
+
+    var toastText = ""
+    // 내 포켓몬 찾기
+    if (id2 == myId) {
+      myFighterName = fight1.getString("name")
+      opFighterName = fight2.getString("name")
+      myFighterId = fight1.getString("id")
+      opFighterId = fight2.getString("id")
+      myFighterHp = fight1.getDouble("hp")
+      opFighterHp = fight2.getDouble("hp")
+      myFighterMaxHp = fight1.getDouble("maxHp")
+      opFighterMaxHp = fight2.getDouble("maxHp")
+
+      toastText = fight1.getString("effect")
+
+    } else {
+      myFighterName = fight2.getString("name")
+      opFighterName = fight1.getString("name")
+      myFighterId = fight2.getString("id")
+      opFighterId = fight1.getString("id")
+      myFighterHp = fight2.getDouble("hp")
+      opFighterHp = fight1.getDouble("hp")
+      myFighterMaxHp = fight2.getDouble("maxHp")
+      opFighterMaxHp = fight1.getDouble("maxHp")
+
+      var toastText = fight2.getString("effect")
+    }
+
+    val myhptext = "${ceil(myFighterHp).toInt()} / ${myFighterMaxHp.toInt()}"
+    val ophptext = "${ceil(opFighterHp).toInt()} / ${opFighterMaxHp.toInt()}"
+    val myhppercent = myFighterHp/myFighterMaxHp
+    val ophppercent = opFighterHp/opFighterMaxHp
+  }
+
+  fun showAnimation(obj: JSONObject){
+
+    val state = obj.getJSONObject("state")
+    val stateKey = state.getString("key")
+    val fightsObj = obj.getJSONArray("fights")
+
+    val resultObj = fightsObj
+
+    val fight1 = resultObj[0] as JSONObject
+    val fight2 = resultObj[1] as JSONObject
+    val id1 = fight1.get("ownerId")
+    val id2 = fight2.get("ownerId")
+
+    var res1 = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    var res2 = Gson().fromJson(fight2.toString(), FightResult::class.java)
+
+    if(res1.attackOrder == 2) {
+      res1 = Gson().fromJson(fight2.toString(), FightResult::class.java)
+      res2 = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    }
+
+    var toastText = ""
+    // 내 포켓몬 찾기
+    if (id2 == myId) {
+      myFighterName = fight1.getString("name")
+      opFighterName = fight2.getString("name")
+      myFighterId = fight1.getString("id")
+      opFighterId = fight2.getString("id")
+      myFighterHp = fight1.getDouble("hp")
+      opFighterHp = fight2.getDouble("hp")
+      myFighterMaxHp = fight1.getDouble("maxHp")
+      opFighterMaxHp = fight2.getDouble("maxHp")
+
+      toastText = fight1.getString("effect")
+
+    } else {
+      myFighterName = fight2.getString("name")
+      opFighterName = fight1.getString("name")
+      myFighterId = fight2.getString("id")
+      opFighterId = fight1.getString("id")
+      myFighterHp = fight2.getDouble("hp")
+      opFighterHp = fight1.getDouble("hp")
+      myFighterMaxHp = fight2.getDouble("maxHp")
+      opFighterMaxHp = fight1.getDouble("maxHp")
+
+      var toastText = fight2.getString("effect")
+    }
+
+    val myhptext = "${ceil(myFighterHp).toInt()} / ${myFighterMaxHp.toInt()}"
+    val ophptext = "${ceil(opFighterHp).toInt()} / ${opFighterMaxHp.toInt()}"
+    val myhppercent = myFighterHp/myFighterMaxHp
+    val ophppercent = opFighterHp/opFighterMaxHp
+
+    runOnUiThread {
+      /* binding.battleTextNameMe.setText(myFighterName) // 교체
+      binding.battleTextNameOp.setText(opFighterName) // 교체
+      binding.battleTextHpMe.setText(myhptext) // all
+      binding.battleTextHpOp.setText(ophptext) // all
+      binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt()) // all
+      binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt()) // all
+      binding.battleBarHpMe.max = myFighterMaxHp.toInt() // 교체
+      binding.battleBarHpOp.max = opFighterMaxHp.toInt() // 교체 */
+
+      binding.effectText.setText("${res1.name}의 ${res1.skillName}!")
+      // 움찔
+
+      Handler().postDelayed(
+        {
+          // 선공 스킬 이펙트
+          binding.effectText.setText(res1.effect)
+
+          if(res2.ownerId == myId){
+            binding.battleTextHpOp.setText(ophptext) // all
+            binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt()) // all
+
+            if(opFighterHp == 0.0) {
+              swapLogic(obj)
+              return@postDelayed
+            }
+
+            // 만약 애니메이션 넣으면 여기에
+          } else {
+            binding.battleTextHpMe.setText(myhptext) // all
+            binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt()) // all
+
+            if(myFighterHp == 0.0) {
+              swapLogic(obj)
+              return@postDelayed
+            }
+          }
+
+          Handler().postDelayed({
+            var str3 = "${res2.name}의 ${res2.skillName}!" // or 교체
+            binding.effectText.setText(str3)
+
+
+            Handler().postDelayed({
+              binding.effectText.setText(res2.effect)
+
+              if(res1.ownerId == myId){
+                binding.battleTextHpOp.setText(ophptext) // all
+                binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt()) // all
+                // binding.battleTextNameOp.setText(opFighterName) //
+                // binding.battleBarHpOp.max = opFighterMaxHp.toInt() //
+
+                if(opFighterHp == 0.0) {
+                  swapLogic(obj)
+                  return@postDelayed
+                }
+
+                // 만약 애니메이션 넣으면 여기에
+              } else {
+                binding.battleTextHpMe.setText(myhptext) // all
+                binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt()) // all
+                //binding.battleTextNameMe.setText(myFighterName)
+                //binding.battleBarHpMe.max = myFighterMaxHp.toInt()
+
+                if(myFighterHp == 0.0) {
+                  swapLogic(obj)
+                  return@postDelayed
+                }
+              }
+
+            }, 1000)
+          }, 1000)
+        }, 1000)
+
+      println(res1.effect)
+
+      println("${res2.name}의 ${res2.skillName}!")
+      println(res2.effect)
+
+    }
+
+
+
+  }
+
+
   fun updatePokemon(resultObj : JSONArray) {
     val fight1 = resultObj[0] as JSONObject
     val fight2 = resultObj[1] as JSONObject
     val id1 = fight1.get("ownerId")
     val id2 = fight2.get("ownerId")
+
+    var res1 = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    var res2 = Gson().fromJson(fight2.toString(), FightResult::class.java)
+
+    if(res1.attackOrder == 2) {
+      res1 = Gson().fromJson(fight2.toString(), FightResult::class.java)
+      res2 = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    }
 
     var toastText = ""
     // 내 포켓몬 찾기
@@ -321,6 +554,33 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
         binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt())
         binding.battleBarHpMe.max = myFighterMaxHp.toInt()
         binding.battleBarHpOp.max = opFighterMaxHp.toInt()
+
+        binding.effectText.setText("${res1.name}의 ${res1.skillName}!")
+
+
+        Handler().postDelayed(
+          {
+            binding.effectText.setText(res1.effect)
+
+            Handler().postDelayed({
+              var str3 = "${res2.name}의 ${res2.skillName}!"
+               binding.effectText.setText(str3)
+
+
+              Handler().postDelayed({
+                binding.effectText.setText(res2.effect)
+
+
+
+              }, 2000)
+            }, 2000)
+          }, 2000)
+
+        println(res1.effect)
+
+        println("${res2.name}의 ${res2.skillName}!")
+        println(res2.effect)
+
       }
 
 //      if (myhppercent < 0.2) {
