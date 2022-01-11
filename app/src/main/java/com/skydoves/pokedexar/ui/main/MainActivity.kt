@@ -123,9 +123,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
   lateinit var mMyId: String
 
   fun showInformation(){
+    val loading = Dialog(this)
+    loading.setContentView(R.layout.loading_dialog)
+    loading.setCancelable(false)
+    loading.show()
+
     DataIO.requestUserAndDo {
       findViewById<TextView>(R.id.main_name).text = "이름 : ${it.nickname}"
       findViewById<TextView>(R.id.main_money).text = "돈 : ${it.money}$"
+    }
+    DataIO.requestBoxAndDo {
+      findViewById<TextView>(R.id.main_have).text = "보유 포켓몬 : ${it.size}마리"
+      showSelectedPokemon(it)
+      loading.dismiss()
     }
   }
 
@@ -167,5 +177,35 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
 
+  }
+
+  private fun showSelectedPokemon(boxList:Array<BoxData>){
+    val selectedBoxList = arrayOf<BoxData?>(null, null, null, null)
+    boxList.forEach {
+      if(it.selected > 0) {
+        selectedBoxList[it.selected-1] = it
+      }
+    }
+
+
+    val pokemon1 = selectedBoxList[0]
+    val pokemon1_img = findViewById<ImageView>(R.id.pokemon1_img)
+    val resourceId1 = this.resources.getIdentifier("pokemon${pokemon1?.pokemon?.id ?:""}", "drawable", this.packageName)
+    pokemon1_img.setImageResource(resourceId1)
+
+    val pokemon2 = selectedBoxList[1]
+    val pokemon2_img = findViewById<ImageView>(R.id.pokemon2_img)
+    val resourceId2 = this.resources.getIdentifier("pokemon${pokemon2?.pokemon?.id ?:""}", "drawable", this.packageName)
+    pokemon2_img.setImageResource(resourceId2)
+
+    val pokemon3 = selectedBoxList[2]
+    val pokemon3_img = findViewById<ImageView>(R.id.pokemon3_img)
+    val resourceId3 = this.resources.getIdentifier("pokemon${pokemon3?.pokemon?.id ?:""}", "drawable", this.packageName)
+    pokemon3_img.setImageResource(resourceId3)
+
+    val pokemon4 = selectedBoxList[3]
+    val pokemon4_img = findViewById<ImageView>(R.id.pokemon4_img)
+    val resourceId4 = this.resources.getIdentifier("pokemon${pokemon4?.pokemon?.id ?: ""}", "drawable", this.packageName)
+    pokemon4_img.setImageResource(resourceId4)
   }
 }
