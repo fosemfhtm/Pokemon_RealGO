@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_height="527dp"
+    android:layout_height="531.5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -65,7 +65,8 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="체력: "
+                    android:text=" 체력"
+                    android:textStyle="bold"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -100,7 +101,8 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="공격: "
+                    android:text=" 공격"
+                    android:textStyle="bold"
                     android:textSize="20dp" />
 
                 <TextView
@@ -135,7 +137,8 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="방어: "
+                    android:text=" 방어"
+                    android:textStyle="bold"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -171,7 +174,8 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="특공: "
+                    android:text=" 특공"
+                    android:textStyle="bold"
                     android:textSize="20dp" />
 
                 <TextView
@@ -206,7 +210,8 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="특방: "
+                    android:text=" 특방"
+                    android:textStyle="bold"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -241,7 +246,8 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="속도: "
+                    android:text=" 속도"
+                    android:textStyle="bold"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -272,7 +278,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
                 <TextView
                     android:id="@+id/detail_skill1"
                     android:layout_width="0dp"
