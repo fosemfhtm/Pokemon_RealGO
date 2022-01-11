@@ -20,49 +20,54 @@ import com.google.ar.sceneform.math.Vector3
 import kotlin.random.Random
 
 object PokemonModels {
+  val scaleUp = 1.5f
 
   private fun getEevee() = RenderingModel(
     name = "eevee",
     model = "eevee.sfb",
+    scale = scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getAbra() = RenderingModel(
     name = "abra",
     model = "abra.sfb",
-    scale = 2.0f,
+    scale = 2.0f* scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getBulbasaur() = RenderingModel(
     name = "bulbasaur",
     model = "bulbasaur.sfb",
+    scale = scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getCharmander() = RenderingModel(
     name = "charmander",
     model = "charmander.sfb",
+    scale = scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getDratini() = RenderingModel(
     name = "dratini",
     model = "dratini.sfb",
-    scale = 0.7f,
+    scale = 0.7f * scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getJigglypuff() = RenderingModel(
     name = "jigglypuff",
     model = "jigglypuff.sfb",
-    scale = 0.45f,
+    scale = 0.45f * scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   fun getMagikarp() = RenderingModel(
     name = "magikarp",
     model = "magikarp.sfb",
+    scale = scaleUp,
     direction = Vector3(0.5f, 0f, 1f),
     localPosition = DEFAULT_POSITION_POKEMON
   )
@@ -70,33 +75,35 @@ object PokemonModels {
   private fun getMew() = RenderingModel(
     name = "mew",
     model = "mew.sfb",
-    scale = 1.5f,
+    scale = 1.5f * scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON,
   )
 
   private fun getOddish() = RenderingModel(
     name = "oddish",
     model = "oddish.sfb",
+    scale = scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getPikachu() = RenderingModel(
     name = "pikachu",
     model = "pikachu.sfb",
-    scale = 0.85f,
+    scale = 0.85f * scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getPoliwag() = RenderingModel(
     name = "poliwag",
     model = "poliwag.sfb",
+    scale = scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   private fun getSnorlax() = RenderingModel(
     name = "snorlax",
     model = "snorlax.sfb",
-    scale = 3f,
+    scale = 3f * scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
@@ -104,20 +111,21 @@ object PokemonModels {
     name = "squirtle",
     model = "squirtle.sfb",
     direction = Vector3(0.75f, 0f, 1f),
-    scale = 2.5f,
+    scale = 2.5f * scaleUp,
     localPosition = DEFAULT_POSITION_POKEMON
   )
 
   fun getPokeball() = RenderingModel(
     name = "pokeball",
     model = "pokeball.sfb",
-    scale = 0.1f,
+    scale = 0.1f * scaleUp,
     localPosition = DEFAULT_POSITION_POKE_BALL
   )
 
   fun getGarden() = RenderingModel(
     name = "garden",
     model = "garden.sfb",
+    scale = scaleUp,
     localPosition = DEFAULT_POSITION_GARDEN
   )
 
