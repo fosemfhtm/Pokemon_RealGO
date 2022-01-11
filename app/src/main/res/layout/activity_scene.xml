@@ -35,9 +35,9 @@
         android:id="@+id/arFragment"
         android:name="com.google.ar.sceneform.ux.ArFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/effect_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +121,21 @@
           android:layout_gravity="end"/>
     </LinearLayout>
 
-
+    <LinearLayout
+        android:id="@+id/effect_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout2"
+        android:background="@color/background800">
+        <TextView
+            android:id="@+id/effect_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+          android:text="효과는 굉장했다!!"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
