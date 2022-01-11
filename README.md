@@ -26,10 +26,14 @@ Made by kotlin
 
 ## Real-time battle server
 
-## Libraries
+## Reference / Libraries
 - Minimum SDK level 24.
 - Kotlin based, Coroutines + Flow for asynchronous.
 - ARCore - ARCore SDK for Android.
 - SceneForm - Sceneform SDK for Android.
+- AR models & Renderer Pokedex-AR(https://github.com/skydoves/Pokedex-AR)
 
 ## Comments
+- 김수민 : 안녕
+- 박수빈 : 반가워
+- 정강산 : 잘가
