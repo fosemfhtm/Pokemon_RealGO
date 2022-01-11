@@ -9,7 +9,8 @@
 #### 박수빈 [psb0623](https://github.com/psb0623)
 #### 정강산 [Sanu7D0](https://github.com/Sanu7D0)
  
-## Features
+## App
+made by kotlin
 
 ### Login
 
@@ -21,6 +22,14 @@
 
 ### Battle
 
+## Database server
+
+## Real-time battle server
+
 ## Libraries
+- Minimum SDK level 24.
+- Kotlin based, Coroutines + Flow for asynchronous.
+- ARCore - ARCore SDK for Android.
+- SceneForm - Sceneform SDK for Android.
 
 ## Comments
