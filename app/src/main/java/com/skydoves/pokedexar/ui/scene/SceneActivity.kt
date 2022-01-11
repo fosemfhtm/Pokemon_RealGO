@@ -17,6 +17,7 @@
 package com.skydoves.pokedexar.ui.scene
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -52,12 +53,16 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
   private val viewModel by viewModels<HomeViewModel>()
   private lateinit var mSocket : Socket
+  var mediaPlayer : MediaPlayer? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     applyFullScreenWindow()
     super.onCreate(savedInstanceState)
     binding.lifecycleOwner = this
     binding.vm = viewModel
+
+    mediaPlayer = MediaPlayer.create(this, R.raw.battle_bgm)
+    mediaPlayer?.start()
 
     roomId = EasySharedPreference.Companion.getString("roomId", "Default")
     myId = EasySharedPreference.Companion.getString("myId", "Default")
@@ -91,7 +96,15 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     }
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+    mediaPlayer?.release()
+    mediaPlayer = null
+  }
+
   private fun initializeModels(arFragment: ArFragment, session: Session) {
+   // TODO: 교체 할 때마다 모델 가져와서 오래걸리나? -> 시작 시 포켓몬 로스터 모두 로드?
+
     if (session.allAnchors.isEmpty() && !viewModel.isCaught) {
       var pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
       myFighterAnchor = session.createAnchor(pose)
@@ -113,18 +126,6 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
           ModelRenderer.addGardenOnScene(arFragment, this, renderable, opPokemon)
         }
       }
-
-      /*session.createAnchor(pose).apply {
-        val pokemon1 = PokemonModels.getRandomPokemon().copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON1)
-        ModelRenderer.renderObject(this@SceneActivity, pokemon1) { renderable ->
-          ModelRenderer.addPokemonOnScene(arFragment, this, renderable, pokemon1)
-        }
-
-        val pokemon2 = PokemonModels.getRandomPokemon().copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON2)
-        ModelRenderer.renderObject(this@SceneActivity, pokemon2) { renderable ->
-          ModelRenderer.addPokemonOnScene(arFragment, this, renderable, pokemon2)
-        }
-      }*/
     }
   }
 
@@ -135,6 +136,7 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     val state = obj.getJSONObject("state")
     val stateKey = state.getString("key")
     val fightsObj = obj.getJSONArray("fights")
+
     if (stateKey == "default" || stateKey == "switch") {
       if (stateKey == "switch") {
         // 죽은 포켓몬과 다음 포켓몬 교체
@@ -145,9 +147,11 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
             // 죽은 포켓몬 AR 삭제
 //            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId)
             if (deadPokemonId == myFighterId) {
-//              myFighterAnchor.detach() // detach -> remove?
+              myFighterAnchor.detach() // detach -> remove?
+            } else if (deadPokemonId == opFighterId){
+              opFighterAnchor.detach()
             } else {
-//              opFighterAnchor.detach()
+              // ...
             }
 
             fightsObj.put(i, state.getJSONObject("switch"))
@@ -251,12 +255,12 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       var toastText = fight2.getString("effect")
     }
 
-    Thread(Runnable {
+//    Thread(Runnable {
 //      if (toastText != "") {
 //        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
 //      }
 
-    }).start()
+//    }).start()
 
     runOnUiThread {
 //      if (toastText != "") {
