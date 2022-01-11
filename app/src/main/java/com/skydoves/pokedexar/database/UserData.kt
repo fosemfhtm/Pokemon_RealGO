@@ -5,5 +5,7 @@ class UserData (
     var email: String,
     var name: String,
     var password: String,
-    var money: Int
+    var money: Int,
+    var win: Int,
+    var lose: Int
     ){}

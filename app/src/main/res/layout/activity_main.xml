@@ -65,7 +65,7 @@
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:textColor="@color/white"
-          android:text="이름 : 김수민"
+          android:text="이름 :"
           android:textSize="20dp"/>
 
       <TextView
@@ -75,25 +75,27 @@
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:textColor="@color/white"
-          android:text="돈 : 999999$"
+          android:text="돈 : "
           android:textSize="20dp"/>
 
       <TextView
+          android:id="@+id/main_winlose"
           android:layout_weight="1"
           android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:textColor="@color/white"
-          android:text="전적 : 0승 0패"
+          android:text="전적 :"
           android:textSize="20dp"/>
 
       <TextView
+          android:id="@+id/main_have"
           android:layout_weight="1"
           android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:textColor="@color/white"
-          android:text="보유 포켓몬 : 8마리"
+          android:text="보유 포켓몬 : "
           android:textSize="20dp"/>
 
 
@@ -121,28 +123,28 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokeball"/>
+            android:src="@drawable/pokemon"/>
         <ImageView
             android:id="@+id/pokemon2_img"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokeball" />
+            android:src="@drawable/pokemon" />
         <ImageView
             android:id="@+id/pokemon3_img"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokeball"/>
+            android:src="@drawable/pokemon"/>
         <ImageView
             android:id="@+id/pokemon4_img"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/pokeball"/>
+            android:src="@drawable/pokemon"/>
       </LinearLayout>
 
 
