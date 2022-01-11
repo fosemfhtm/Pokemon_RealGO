@@ -6,8 +6,10 @@ import retrofit2.http.*
 
 interface GachaService{
 
+    @FormUrlEncoded
     @POST("/pokemon/gacha/")
     fun requestBoxList(
         @Header("Authorization") token: String,
+        @Field("gacha") gacha: Int,
     ) : Call<BoxData>
 }

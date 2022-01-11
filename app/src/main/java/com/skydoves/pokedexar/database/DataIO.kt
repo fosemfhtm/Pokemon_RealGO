@@ -114,11 +114,11 @@ class DataIO {
             )
         }
 
-        fun gachaAndDo(action: (BoxData) -> Unit){
+        fun gachaAndDo(gacha:Int, action: (BoxData) -> Unit){
             val retrofit = Retrofit.Builder().baseUrl("http://192.249.18.193:80")
                 .addConverterFactory(GsonConverterFactory.create()).build()
             val service = retrofit.create(GachaService::class.java)
-            service.requestBoxList( "Token ${EasySharedPreference.Companion.getString("token", "noToken")}" ).enqueue(
+            service.requestBoxList( "Token ${EasySharedPreference.Companion.getString("token", "noToken")}", gacha).enqueue(
                 object : Callback<BoxData> {
                     override fun onFailure(call: Call<BoxData>, t: Throwable) {
 

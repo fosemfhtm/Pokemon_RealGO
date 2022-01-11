@@ -10,24 +10,14 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
-import com.amn.easysharedpreferences.EasySharedPreference
-import com.google.android.filament.Box
 import com.skydoves.bindables.BindingActivity
 import com.skydoves.bundler.intentOf
 import com.skydoves.pokedexar.R
 import com.skydoves.pokedexar.database.BoxData
-import com.skydoves.pokedexar.database.BoxListService
 import com.skydoves.pokedexar.database.DataIO
-import com.skydoves.pokedexar.database.GachaService
 import com.skydoves.pokedexar.databinding.ActivitySceneBinding
 import com.skydoves.pokedexar.extensions.applyFullScreenWindow
-import com.skydoves.pokedexar.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @AndroidEntryPoint
 class ShopActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_shop) {
@@ -38,7 +28,9 @@ class ShopActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sho
     applyFullScreenWindow()
     super.onCreate(savedInstanceState)
 
-    val draw_btn = findViewById<ImageButton>(R.id.gacha1)
+    val gacha1 = findViewById<ImageButton>(R.id.gacha1)
+    val gacha2 = findViewById<ImageButton>(R.id.gacha2)
+    val gacha3 = findViewById<ImageButton>(R.id.gacha3)
 
     val shineEffect = findViewById<ImageView>(R.id.shine_effect)
     ObjectAnimator.ofFloat(shineEffect, "rotation", 180f).apply{
@@ -47,13 +39,13 @@ class ShopActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sho
       start()
     }
 
-    draw_btn.setOnClickListener {
-      DataIO.updateUserAndDo(10000){
+    gacha1.setOnClickListener {
+      DataIO.updateUserAndDo(11000){
         println(it)
         println(it.message)
         val msg = it.message
         if(msg == "success"){
-          DataIO.gachaAndDo {
+          DataIO.gachaAndDo(0) {
             showDetailDialog(it)
             Toast.makeText(this@ShopActivity ,it.pokemon.name +"을(를) 뽑았다!", Toast.LENGTH_SHORT).show()
           }
@@ -61,7 +53,38 @@ class ShopActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sho
           Toast.makeText(this@ShopActivity ,"돈이 부족합니다", Toast.LENGTH_SHORT).show()
         }
       }
+    }
 
+    gacha2.setOnClickListener {
+      DataIO.updateUserAndDo(33000){
+        println(it)
+        println(it.message)
+        val msg = it.message
+        if(msg == "success"){
+          DataIO.gachaAndDo(1) {
+            showDetailDialog(it)
+            Toast.makeText(this@ShopActivity ,it.pokemon.name +"을(를) 뽑았다!", Toast.LENGTH_SHORT).show()
+          }
+        } else {
+          Toast.makeText(this@ShopActivity ,"돈이 부족합니다", Toast.LENGTH_SHORT).show()
+        }
+      }
+    }
+
+    gacha3.setOnClickListener {
+      DataIO.updateUserAndDo(110000){
+        println(it)
+        println(it.message)
+        val msg = it.message
+        if(msg == "success"){
+          DataIO.gachaAndDo(2) {
+            showDetailDialog(it)
+            Toast.makeText(this@ShopActivity ,it.pokemon.name +"을(를) 뽑았다!", Toast.LENGTH_SHORT).show()
+          }
+        } else {
+          Toast.makeText(this@ShopActivity ,"돈이 부족합니다", Toast.LENGTH_SHORT).show()
+        }
+      }
     }
 
   }
