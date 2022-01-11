@@ -1,1 +1,2 @@
-# 신나고 즐거운 AR 포켓몬 배틀
+# Pokemon_RealGo
+
