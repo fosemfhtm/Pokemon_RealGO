@@ -230,6 +230,8 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
   lateinit var opFighterId: String
   lateinit var myFighterAnchor: Anchor
   lateinit var opFighterAnchor: Anchor
+  lateinit var mySkills: List<String>
+
   var myFighterHp: Double = 0.0
   var opFighterHp: Double = 0.0
   var myFighterMaxHp: Double = 0.0
@@ -256,7 +258,8 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
           if (fo.getString("result") == "die") {
             val deadPokemonId = fo.getString("id")
             // 죽은 포켓몬 AR 삭제
-//            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId)
+//            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId
+
 
             if (deadPokemonId == myFighterId) {
               myFighterName = swapPokemonObj.getString("name")
@@ -286,6 +289,11 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
               binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt()) // all
               binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt()) // all
 
+
+              binding.battleBtnSkill1.setText(mySkills[0])
+              binding.battleBtnSkill2.setText(mySkills[1])
+              binding.battleBtnSkill3.setText(mySkills[2])
+              binding.battleBtnSkill4.setText(mySkills[3])
             }
 
 
@@ -341,7 +349,14 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       opFighterMaxHp = fight1.getDouble("maxHp")
 
       var toastText = fight2.getString("effect")
+
+      // mySkills = fight2.getJSONArray("skillNames")
+
     }
+
+    var my = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    if(my.ownerId != myId) my = Gson().fromJson(fight2.toString(), FightResult::class.java)
+    mySkills = my.skillNames
 
     val myhptext = "${ceil(myFighterHp).toInt()} / ${myFighterMaxHp.toInt()}"
     val ophptext = "${ceil(opFighterHp).toInt()} / ${opFighterMaxHp.toInt()}"
@@ -396,6 +411,11 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
       var toastText = fight2.getString("effect")
     }
+
+    var my = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    if(my.ownerId != myId) my = Gson().fromJson(fight2.toString(), FightResult::class.java)
+    mySkills = my.skillNames
+
 
     val myhptext = "${ceil(myFighterHp).toInt()} / ${myFighterMaxHp.toInt()}"
     val ophptext = "${ceil(opFighterHp).toInt()} / ${opFighterMaxHp.toInt()}"
@@ -497,6 +517,10 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     var res1 = Gson().fromJson(fight1.toString(), FightResult::class.java)
     var res2 = Gson().fromJson(fight2.toString(), FightResult::class.java)
 
+    var my = Gson().fromJson(fight1.toString(), FightResult::class.java)
+    if(my.ownerId != myId) my = Gson().fromJson(fight2.toString(), FightResult::class.java)
+    mySkills = my.skillNames
+
     if(res1.attackOrder == 2) {
       res1 = Gson().fromJson(fight2.toString(), FightResult::class.java)
       res2 = Gson().fromJson(fight1.toString(), FightResult::class.java)
@@ -546,6 +570,11 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       val ophppercent = opFighterHp/opFighterMaxHp
 
       runOnUiThread {
+        binding.battleBtnSkill1.setText(my.skillNames[0])
+        binding.battleBtnSkill2.setText(my.skillNames[1])
+        binding.battleBtnSkill3.setText(my.skillNames[2])
+        binding.battleBtnSkill4.setText(my.skillNames[3])
+
         binding.battleTextNameMe.setText(myFighterName)
         binding.battleTextNameOp.setText(opFighterName)
         binding.battleTextHpMe.setText(myhptext)
@@ -555,7 +584,7 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
         binding.battleBarHpMe.max = myFighterMaxHp.toInt()
         binding.battleBarHpOp.max = opFighterMaxHp.toInt()
 
-        binding.effectText.setText("${res1.name}의 ${res1.skillName}!")
+        binding.effectText.setText("${res1.ownerId}는 ${res1.name}을(를) 내보냈다!")
 
 
         Handler().postDelayed(
@@ -563,7 +592,7 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
             binding.effectText.setText(res1.effect)
 
             Handler().postDelayed({
-              var str3 = "${res2.name}의 ${res2.skillName}!"
+              var str3 = "${res2.ownerId}는 ${res2.name}을(를) 내보냈다!"
                binding.effectText.setText(str3)
 
 
@@ -572,9 +601,9 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
 
 
-              }, 2000)
-            }, 2000)
-          }, 2000)
+              }, 1000)
+            }, 1000)
+          }, 1000)
 
         println(res1.effect)
 
