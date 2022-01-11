@@ -15,13 +15,30 @@ Made by kotlin
 
 ### Login
 
+- 회원가입
+- 로그인
+
 ### Main
+
+- 트레이너 정보
+- 지닌포켓몬
 
 ### Home
 
+- 포켓박스
+- 포켓몬 상세 정보
+- 지닌 포켓몬 변경
+
 ### Shop
 
+- 일반 뽑기
+- 고급 뽑기
+- 슈퍼 프리미엄 뽑기
+
 ### Battle
+
+- BattleRoom 입장
+- 포켓몬 실시간 대전
 
 ## Database server
 
@@ -35,6 +52,6 @@ Made by kotlin
 - AR models & Renderer - [Pokedex-AR](https://github.com/skydoves/Pokedex-AR)
 
 ## Comments
-- 김수민 : 안녕
-- 박수빈 : 반가워
-- 정강산 : 잘가
+- 김수민 :  
+- 박수빈 : 
+- 정강산 :  
