@@ -44,7 +44,8 @@ Made by kotlin
 - BattleRoom 입장 : 메인에서 배틀 버튼을 누르면 방 번호를 입력할 수 있는 창이 뜬다. 상대방과 같은 방 번호를 입력하면 대전을 시작할 수 있다.
 - 포켓몬 실시간 대전 : AR 포켓몬이 화면에 나타나고 포켓몬 대전을 실시간으로 할 수 있게 된다.
 
-## Database server(https://github.com/psb0623/Pokemon-RealGO-Database)
+## Database server
+https://github.com/psb0623/Pokemon-RealGO-Database
 
 Django와 SQLite3를 이용하여 사용자 데이터 및 포켓몬 배틀에 필요한 데이터들을 관리하는 데이터 서버를 구축하였다.
 
