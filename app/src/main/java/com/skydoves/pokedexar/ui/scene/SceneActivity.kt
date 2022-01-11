@@ -232,9 +232,9 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       myFighterId = fight1.getString("id")
       opFighterId = fight2.getString("id")
       myFighterHp = fight1.getDouble("hp")
-      myFighterMaxHp = fight1.getDouble("maxHp")
       opFighterHp = fight2.getDouble("hp")
-      opFighterMaxHp = fight1.getDouble("maxHp")
+      myFighterMaxHp = fight1.getDouble("maxHp")
+      opFighterMaxHp = fight2.getDouble("maxHp")
 
       toastText = fight1.getString("effect")
 
@@ -245,6 +245,8 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
       opFighterId = fight1.getString("id")
       myFighterHp = fight2.getDouble("hp")
       opFighterHp = fight1.getDouble("hp")
+      myFighterMaxHp = fight2.getDouble("maxHp")
+      opFighterMaxHp = fight1.getDouble("maxHp")
 
       var toastText = fight2.getString("effect")
     }
@@ -259,10 +261,50 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     runOnUiThread {
 //      if (toastText != "") {
 //        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show() }
+
+      val yellowBarId = this.resources.getIdentifier("def_progressbar", "drawable", this.packageName)
+      val redBarId = this.resources.getIdentifier("hp_progressbar", "drawable", this.packageName)
+      val greenBarId = this.resources.getIdentifier("sef_progressbar","drawable", this.packageName)
+
+      val yellowbar = this.resources.getDrawable(yellowBarId)
+      val redbar = this.resources.getDrawable(redBarId)
+      val greenbar = this.resources.getDrawable(greenBarId)
+
+      val myhptext = "${ceil(myFighterHp).toInt()} / ${myFighterMaxHp.toInt()}"
+      val ophptext = "${ceil(opFighterHp).toInt()} / ${opFighterMaxHp.toInt()}"
+      val myhppercent = myFighterHp/myFighterMaxHp
+      val ophppercent = opFighterHp/opFighterMaxHp
+
       binding.battleTextNameMe.setText(myFighterName)
       binding.battleTextNameOp.setText(opFighterName)
-      binding.battleTextHpMe.setText(ceil(myFighterHp).toInt().toString())
-      binding.battleTextHpOp.setText(ceil(opFighterHp).toInt().toString())
+      binding.battleTextHpMe.setText(myhptext)
+      binding.battleTextHpOp.setText(ophptext)
+      binding.battleBarHpMe.setProgress(ceil(myFighterHp).toInt())
+      binding.battleBarHpOp.setProgress(ceil(opFighterHp).toInt())
+      binding.battleBarHpMe.max = myFighterMaxHp.toInt()
+      binding.battleBarHpOp.max = opFighterMaxHp.toInt()
+
+//      if (myhppercent < 0.2) {
+//        binding.battleBarHpMe.progressDrawable = redbar
+//      }
+//      else if (myhppercent < 0.5) {
+//        binding.battleBarHpMe.progressDrawable = yellowbar
+//      }
+//      else {
+//        binding.battleBarHpMe.progressDrawable = greenbar
+//      }
+//
+//      if (ophppercent < 0.2) {
+//        binding.battleBarHpOp.progressDrawable = redbar
+//      }
+//      else if (myhppercent < 0.5) {
+//        binding.battleBarHpOp.progressDrawable = yellowbar
+//      }
+//      else {
+//        binding.battleBarHpOp.progressDrawable = greenbar
+//      }
+
+
     }
   }
 }
