@@ -79,12 +79,13 @@
           android:textSize="20dp"/>
 
       <TextView
+          android:id="@+id/main_winlose"
           android:layout_weight="1"
           android:layout_margin="5dp"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:textColor="@color/white"
-          android:text="전적 : 0승 0패"
+          android:text="전적 :"
           android:textSize="20dp"/>
 
       <TextView

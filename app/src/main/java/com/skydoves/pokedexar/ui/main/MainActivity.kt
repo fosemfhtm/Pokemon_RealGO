@@ -131,6 +131,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     DataIO.requestUserAndDo {
       findViewById<TextView>(R.id.main_name).text = "이름 : ${it.nickname}"
       findViewById<TextView>(R.id.main_money).text = "돈 : ${it.money}$"
+      findViewById<TextView>(R.id.main_winlose).text = "전적 : ${it.win}승 ${it.lose}패"
     }
     DataIO.requestBoxAndDo {
       findViewById<TextView>(R.id.main_have).text = "보유 포켓몬 : ${it.size}마리"
