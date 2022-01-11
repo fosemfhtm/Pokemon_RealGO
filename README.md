@@ -10,7 +10,7 @@
 #### 정강산 [Sanu7D0](https://github.com/Sanu7D0)
  
 ## App
-made by kotlin
+Made by kotlin
 
 ### Login
 
