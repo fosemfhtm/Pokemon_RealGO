@@ -9,6 +9,7 @@ class FightResult(
     var hp: Double,
     var attackOrder: Int,
     var maxHp: Double,
-    var skillName: String
+    var skillName: String,
+    var skillNames : List<String>
 ) {
 }
