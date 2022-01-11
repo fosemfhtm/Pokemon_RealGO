@@ -31,7 +31,7 @@ Made by kotlin
 - Kotlin based, Coroutines + Flow for asynchronous.
 - ARCore - ARCore SDK for Android.
 - SceneForm - Sceneform SDK for Android.
-- AR models & Renderer Pokedex-AR(https://github.com/skydoves/Pokedex-AR)
+- AR models & Renderer [Pokedex-AR](https://github.com/skydoves/Pokedex-AR)
 
 ## Comments
 - 김수민 : 안녕
