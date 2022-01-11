@@ -12,6 +12,7 @@
  
 ## App
 Made by kotlin
+[실시간 배틀 서버 Git](https://github.com/Sanu7D0/Pokemon_RealGO-server)
 
 ### Login
 
