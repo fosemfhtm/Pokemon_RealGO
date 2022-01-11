@@ -81,6 +81,7 @@ object ModelRenderer {
       scaleController.minScale = renderingModel.scale
       scaleController.maxScale = renderingModel.scale + 0.05f
       fragment.arSceneView.scene.addChild(anchorNode)
+
       setOnTouchListener { hitTestResult, motionEvent ->
         if (motionEvent.action == MotionEvent.ACTION_UP) {
           hitTestResult.node?.let { node ->
@@ -156,7 +157,7 @@ object ModelRenderer {
               )
             } else {
               doAfterCatch()
-              pokemonAnchor.detach()
+              pokemonAnchor.detach() // remove??
             }
           }
 

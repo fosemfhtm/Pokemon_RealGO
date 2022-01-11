@@ -18,6 +18,7 @@ package com.skydoves.pokedexar.ui.scene
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.ViewDataBinding
@@ -41,6 +42,8 @@ import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 import com.amn.easysharedpreferences.EasySharedPreference
+import com.google.ar.core.Anchor
+import com.google.ar.sceneform.math.Vector3
 import org.json.JSONArray
 import kotlin.math.ceil
 
@@ -91,7 +94,8 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
   private fun initializeModels(arFragment: ArFragment, session: Session) {
     if (session.allAnchors.isEmpty() && !viewModel.isCaught) {
       var pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
-      session.createAnchor(pose).apply {
+      myFighterAnchor = session.createAnchor(pose)
+      myFighterAnchor.apply {
         val myPokemon = PokemonModels.getPokemonByName(myFighterName).
         copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON1)
         ModelRenderer.renderObject(this@SceneActivity, myPokemon) { renderable ->
@@ -99,10 +103,12 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
         }
       }
 
-      pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, -1f))
-      session.createAnchor(pose).apply {
+      pose = Pose(floatArrayOf(0f, 0f, -1f), floatArrayOf(0f, 0f, 0f, 1f))
+      opFighterAnchor = session.createAnchor(pose)
+      opFighterAnchor.apply {
         val opPokemon = PokemonModels.getPokemonByName(opFighterName).
-        copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON2)
+        copy(localPosition = PokemonModels.DEFAULT_POSITION_DETAILS_POKEMON2).
+        copy(direction = Vector3(0f, 0f, -1f))
         ModelRenderer.renderObject(this@SceneActivity, opPokemon) { renderable ->
           ModelRenderer.addGardenOnScene(arFragment, this, renderable, opPokemon)
         }
@@ -128,37 +134,33 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
 
     val state = obj.getJSONObject("state")
     val stateKey = state.getString("key")
-
+    val fightsObj = obj.getJSONArray("fights")
     if (stateKey == "default" || stateKey == "switch") {
-      Thread(object : Runnable{
-        override fun run() {
-          runOnUiThread(Runnable {
-            val fightsObj = obj.getJSONArray("fights")
-
-            kotlin.run {
-              if (stateKey == "switch") {
-                // 죽은 포켓몬과 다음 포켓몬 교체
-                for (i in 0 until fightsObj.length()) {
-                  var fo = fightsObj.getJSONObject(i)
-                  if (fo.getString("result") == "die") {
-                    fightsObj.put(i, state.getJSONObject("switch"))
-                  }
-                }
-              }
-
-              updatePokemon(fightsObj)
-
-              // set Timer
-//            obj.getInt("timer")
+      if (stateKey == "switch") {
+        // 죽은 포켓몬과 다음 포켓몬 교체
+        for (i in 0 until fightsObj.length()) {
+          var fo = fightsObj.getJSONObject(i)
+          if (fo.getString("result") == "die") {
+            val deadPokemonId = fo.getString("id")
+            // 죽은 포켓몬 AR 삭제
+//            Log.d("ID", deadPokemonId + " " + myFighterId + " " + opFighterId)
+            if (deadPokemonId == myFighterId) {
+//              myFighterAnchor.detach() // detach -> remove?
+            } else {
+//              opFighterAnchor.detach()
             }
-          })
+
+            fightsObj.put(i, state.getJSONObject("switch"))
+          }
         }
-      }).start()
+      }
     } else if (stateKey == "end") {
       // End Battle
     } else {
       // ...
     }
+
+    updatePokemon(fightsObj)
   }
 
   private fun initializeUI() {
@@ -203,10 +205,14 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
   lateinit var roomId: String
   lateinit var myFighterName: String
   lateinit var opFighterName: String
+  lateinit var myFighterId: String
+  lateinit var opFighterId: String
+  lateinit var myFighterAnchor: Anchor
+  lateinit var opFighterAnchor: Anchor
   var myFighterHp: Double = 0.0
   var opFighterHp: Double = 0.0
-
-
+  var myFighterMaxHp: Double = 0.0
+  var opFighterMaxHp: Double = 0.0
 
   /*[{ownerId: p.id,
   id: p.fighter.id,
@@ -218,32 +224,45 @@ class SceneActivity : BindingActivity<ActivitySceneBinding>(R.layout.activity_sc
     val id1 = fight1.get("ownerId")
     val id2 = fight2.get("ownerId")
 
+    var toastText = ""
     // 내 포켓몬 찾기
     if (id1 == myId) {
       myFighterName = fight1.getString("name")
       opFighterName = fight2.getString("name")
+      myFighterId = fight1.getString("id")
+      opFighterId = fight2.getString("id")
       myFighterHp = fight1.getDouble("hp")
+      myFighterMaxHp = fight1.getDouble("maxHp")
       opFighterHp = fight2.getDouble("hp")
+      opFighterMaxHp = fight1.getDouble("maxHp")
 
-      var toastText = fight1.getString("effect")
-      if (toastText != "") {
-        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
-      }
+      toastText = fight1.getString("effect")
+
     } else {
       myFighterName = fight2.getString("name")
       opFighterName = fight1.getString("name")
+      myFighterId = fight2.getString("id")
+      opFighterId = fight1.getString("id")
       myFighterHp = fight2.getDouble("hp")
       opFighterHp = fight1.getDouble("hp")
 
       var toastText = fight2.getString("effect")
-      if (toastText != "") {
-        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
-      }
     }
 
-    binding.battleTextNameMe.setText(myFighterName)
-    binding.battleTextNameOp.setText(opFighterName)
-    binding.battleTextHpMe.setText(ceil(myFighterHp).toInt().toString())
-    binding.battleTextHpOp.setText(ceil(opFighterHp).toInt().toString())
+    Thread(Runnable {
+//      if (toastText != "") {
+//        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
+//      }
+
+    }).start()
+
+    runOnUiThread {
+//      if (toastText != "") {
+//        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show() }
+      binding.battleTextNameMe.setText(myFighterName)
+      binding.battleTextNameOp.setText(opFighterName)
+      binding.battleTextHpMe.setText(ceil(myFighterHp).toInt().toString())
+      binding.battleTextHpOp.setText(ceil(opFighterHp).toInt().toString())
+    }
   }
 }
