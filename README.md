@@ -47,6 +47,15 @@ Made by kotlin
 ## Database server
 
 ## Real-time battle server
+Node.js 의 Socket.io 라이브러리 사용
+ 사용자가 선택한 스킬의 인덱스를 받으면, 서버가 가지고 있는 정보를 토대로
+배틀 로직을 계산하여 결과를 보내준다
+ 소켓 통신으로 특정 Room에 있는 클라이언트들에게만 정보를 보낼 수 있기 때문에,
+1:1 (또는 다수) 간의 실시간 대전에 적합하다.
+
+### Issue
+- 서버가 보내는 정보와 클라이언트의 정보가 꼬일 수 있다. -> 각 단계를 callback으로 관리하여 순서가 꼬이지 않게 해야한다
+- 바닐라 JS로 배틀로직을 객체지향 설계하려니 문제가 많다. -> TS를 써야할듯?
 
 ## Reference / Libraries
 - Minimum SDK level 24.
