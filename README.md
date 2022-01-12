@@ -82,9 +82,9 @@ Node.js 의 Socket.io 라이브러리 사용
 - AR models & Renderer - [Pokedex-AR](https://github.com/skydoves/Pokedex-AR)
 
 ## Comments
-- 김수민 :  
-- 박수빈 : 
-- 정강산 :  
+- 김수민 :  AR / 컨셉디자인 / 앱 
+- 박수빈 :  DB & DB서버 / 로그인 / 디자인 / 배틀 애니메이션
+- 정강산 :  실시간 통신서버 / 배틀로직
 
 ## Todo...?
 - 상대방과 AR 화면 공유
