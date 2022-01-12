@@ -12,7 +12,11 @@
  
 ## App
 Made by kotlin
-[실시간 배틀 서버 Git](https://github.com/Sanu7D0/Pokemon_RealGO-server)
+
+[실시간 배틀 서버](https://github.com/Sanu7D0/Pokemon_RealGO-server)
+
+[DB 서버](https://github.com/psb0623/Pokemon-RealGO-Database)
+
 
 ### Login
 
@@ -46,7 +50,6 @@ Made by kotlin
 - 포켓몬 실시간 대전 : AR 포켓몬이 화면에 나타나고 포켓몬 대전을 실시간으로 할 수 있게 된다.
 
 ## Database server
-https://github.com/psb0623/Pokemon-RealGO-Database
 
 Django와 SQLite3를 이용하여 사용자 데이터 및 포켓몬 배틀에 필요한 데이터들을 관리하는 데이터 서버를 구축하였다.
 
